@@ -5,12 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
-    "aiohttp==3.*",
-    "aioimaplib>=2.0.1",
     "aiologic==0.16.*",
-    "aiorwlock==1.*",
-    "apscheduler==3.*",
-    "gspread==6.*",
     "imap-tools>=1.11.1",
     "pandas-stubs==3.*",
     "pandas[performance]==3.*",

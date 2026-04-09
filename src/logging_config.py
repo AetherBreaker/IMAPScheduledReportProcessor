@@ -21,6 +21,7 @@ RICH_CONSOLE = Console(
 
 CWD = Path.cwd()
 
+logging.getLogger("asyncio").setLevel(logging.DEBUG)
 
 PROJECT_NAME = "ScheduledOrderMiddleman"
 

@@ -12,7 +12,9 @@
             "program": "${workspaceFolder}\\src\\",
             "cwd": "${workspaceFolder}",
             "envFile": "${workspaceFolder}/.env",
-            "env": {},
+            "env": {
+                "SFT_FTP_CREDS_FILE": "${workspaceFolder}\\secrets\\sft_ftp_creds.json"
+            },
             "pythonArgs": [
                 "-X",
                 "pycache_prefix=${workspaceFolder}\\PYCACHE",
@@ -29,7 +31,8 @@
             "cwd": "${workspaceFolder}",
             "envFile": "${workspaceFolder}/.env",
             "env": {
-                "PYTHONPATH": "${workspaceFolder}\\src"
+                "PYTHONPATH": "${workspaceFolder}\\src",
+                "SFT_FTP_CREDS_FILE": "${workspaceFolder}\\secrets\\sft_ftp_creds.json"
             },
             "pythonArgs": [
                 "-X",

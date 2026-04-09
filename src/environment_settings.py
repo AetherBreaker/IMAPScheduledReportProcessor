@@ -27,10 +27,23 @@ testing = False
 class Settings(BaseSettings):
   model_config = (
     SettingsConfigDict(
-      env_file=CWD / "testing.env",
+      env_file=CWD / ".env",
       env_file_encoding="utf-8",
       env_ignore_empty=True,
     )
     if __debug__
     else SettingsConfigDict()
   )
+
+  sft_ftp_creds_file: Annotated[Path, Field(alias="SFT_FTP_CREDS_FILE")]
+
+  alerts_smtp_server: Annotated[str, Field(alias="ALERTS_SMTP_SERVER")] = "smtppro.zoho.com"
+  alerts_smtp_port: Annotated[int, Field(alias="ALERTS_SMTP_PORT")] = 587
+  alerts_email: Annotated[str, Field(alias="ALERTS_EMAIL")] = "info@sweetfiretobacco.com"
+  alerts_email_pwd: Annotated[str, Field(alias="ALERTS_EMAIL_PWD")]
+  alerts_recipients: Annotated[set[str], Field(alias="ALERTS_RECIPIENTS")] = set()
+
+  watch_imap_server: Annotated[str, Field(alias="WATCH_IMAP_SERVER")] = "imappro.zoho.com"
+  watch_imap_port: Annotated[int, Field(alias="WATCH_IMAP_PORT")] = 993
+  watch_email: Annotated[str, Field(alias="WATCH_EMAIL")] = "info@sweetfiretobacco.com"
+  watch_email_pwd: Annotated[str, Field(alias="WATCH_EMAIL_PWD")]
