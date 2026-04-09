@@ -3,7 +3,7 @@ if __name__ == "__main__":
 
   configure_logging()
 
-from asyncio import create_task, run, sleep, to_thread
+from asyncio import TaskGroup, run, sleep, to_thread
 from asyncio.queues import Queue
 from collections.abc import Callable
 from datetime import datetime
@@ -57,28 +57,30 @@ async def main() -> NoReturn:  # sourcery skip: remove-empty-nested-block
     # Write initial heartbeat on startup
     write_heartbeat()
 
-    periodic_heartbeat_task = create_task(run_periodic(30, write_heartbeat))
-
     emails_to_process_queue: Queue[MailMessage] = Queue()
 
-    email_processing_task = create_task(direct_email_processing(emails_to_process_queue, []))
+    async with TaskGroup() as main_tasks:
+      periodic_heartbeat_task = main_tasks.create_task(run_periodic(30, write_heartbeat))
+      email_processing_task = main_tasks.create_task(direct_email_processing(emails_to_process_queue))
+      imap_idle_task = main_tasks.create_task(to_thread(start_imap_email_monitoring, queue=emails_to_process_queue))
 
-    imap_idle_task = create_task(to_thread(start_imap_email_monitoring, queue=emails_to_process_queue))
+      if __debug__:
+        pass
 
-    if __debug__:
-      pass
+      RICH_CONSOLE.rule("[bold red]Boot Done[/]", style="bold red")
+      with RICH_CONSOLE.status("Application is running."):
+        await FATAL_EVENT
 
-    RICH_CONSOLE.rule("[bold red]Boot Done[/]", style="bold red")
-    with RICH_CONSOLE.status("Application is running."):
-      await FATAL_EVENT
+      with RICH_CONSOLE.status("[bold red]Shutting down...[/]", spinner="dots"):
+        email_processing_task.cancel()
 
-      email_processing_task.cancel()
-      imap_idle_task.cancel()
-      periodic_heartbeat_task.cancel()
+        imap_idle_task.cancel()
 
-      emails_to_process_queue.shutdown(immediate=True)
+        periodic_heartbeat_task.cancel()
 
-      exit(1)
+    emails_to_process_queue.shutdown(immediate=True)
+
+    exit(1)
 
   raise RuntimeError("How did we get here? The main function should never exit normally.")
 

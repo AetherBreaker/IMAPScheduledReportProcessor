@@ -47,3 +47,5 @@ class Settings(BaseSettings):
   watch_imap_port: Annotated[int, Field(alias="WATCH_IMAP_PORT")] = 993
   watch_email: Annotated[str, Field(alias="WATCH_EMAIL")] = "info@sweetfiretobacco.com"
   watch_email_pwd: Annotated[str, Field(alias="WATCH_EMAIL_PWD")]
+
+  watch_polling_timeout_sec: Annotated[int, Field(alias="WATCH_POLLING_TIMEOUT_SEC")] = 10
