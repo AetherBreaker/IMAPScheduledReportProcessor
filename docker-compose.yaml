@@ -1,0 +1,37 @@
+services:
+  scheduler:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: imap-scheduled-report-processor
+    restart: no
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - bash -ec '[ -f /app/src/logs/heartbeat.txt ] && ts=$$(cat /app/src/logs/heartbeat.txt 2>/dev/null) && [ -n "$$ts" ] && hb=$$(date -d "$$ts" +%s 2>/dev/null) && now=$$(date +%s) && [ $$((now - hb)) -lt 180 ]'
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+    user: nonroot:nonroot
+    # Persist logs and queue backups
+    volumes:
+      - type: bind
+        source: /data/reports_processing_files/secrets
+        target: /app/secrets
+      - type: bind
+        source: /data/reports_processing_files/logs
+        target: /app/src/logs
+
+    # Environment variables (customize as needed)
+    environment:
+      # Override secret file paths to use Docker secrets location
+      - SFT_FTP_CREDS_FILE=/app/secrets/sft_creds.json
+      # Email to Watch
+      - WATCH_EMAIL_PWD=${WATCH_EMAIL_PWD:?}
+      - WATCH_POLLING_TIMEOUT_SEC=60
+      # Alerts Emails
+      - ALERTS_EMAIL=info@sweetfiretobacco.com
+      - ALERTS_EMAIL_PWD=${ALERTS_EMAIL_PWD:?}
+      - ALERTS_RECIPIENTS=["jacob.ogden@sweetfiretobacco.com"]
