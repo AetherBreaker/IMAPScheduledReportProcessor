@@ -14,15 +14,11 @@ from re import Pattern, compile
 from socket import gaierror
 from typing import NoReturn, Protocol, Self
 
-from environment_init_vars import CWD, SETTINGS
+from environment_init_vars import SETTINGS
 from err_handling import handle_fatal_exc_async
 from imap_tools import MailMessage
 
 logger = getLogger(__name__)
-
-
-ATTACHMENT_DEPOT = CWD / "attachments_dl"
-ATTACHMENT_DEPOT.mkdir(exist_ok=True)
 
 
 class FTPProtocol(Protocol):
