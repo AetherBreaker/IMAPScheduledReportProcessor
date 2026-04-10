@@ -12,7 +12,7 @@ from logging import getLogger
 from pathlib import PurePosixPath
 from re import Pattern, compile
 from socket import gaierror
-from typing import NoReturn, Protocol, Self
+from typing import NoReturn, Self
 
 from environment_init_vars import SETTINGS
 from err_handling import handle_fatal_exc_async
@@ -21,16 +21,11 @@ from imap_tools import MailMessage
 logger = getLogger(__name__)
 
 
-class FTPProtocol(Protocol):
-  def __enter__(self) -> Self: ...
-  def __exit__(self, exc_type, exc_val, exc_tb) -> None: ...
-
-
 class ServerNotAvailableError(ConnectionError):
   pass
 
 
-class SFTFTPClient(FTP, FTPProtocol):
+class SFTFTPClient(FTP):
   creds = loads(SETTINGS.sft_ftp_creds_file.read_text())
 
   def __enter__(self) -> Self:

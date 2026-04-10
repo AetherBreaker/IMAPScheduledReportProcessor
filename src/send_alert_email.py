@@ -10,13 +10,12 @@ from logging import getLogger
 
 from environment_init_vars import SETTINGS
 
+logger = getLogger(__name__)
+
+
 ALERTS_EMAIL = SETTINGS.alerts_email
 ALERTS_EMAIL_PWD = SETTINGS.alerts_email_pwd
-
-
 ALERTS_RECIPIENTS = SETTINGS.alerts_recipients
-
-logger = getLogger(__name__)
 
 
 def send_alert_email(subject: str, content: str) -> None:

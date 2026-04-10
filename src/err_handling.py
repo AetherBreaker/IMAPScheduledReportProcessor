@@ -13,10 +13,6 @@ from environment_init_vars import FATAL_EVENT
 from rich.console import Console
 from send_alert_email import send_alert_email
 
-# from os import _exit
-# from collections.abc import Awaitable
-
-
 logger = getLogger(__name__)
 
 
@@ -32,7 +28,6 @@ def handle_fatal_exc_sync[**TP, TR](func: Callable[TP, TR]) -> Callable[TP, TR |
       if isinstance(e, CancelledError):
         raise
       logger.critical(f"Fatal exception in {func.__qualname__}: {e}", exc_info=True)
-      # _exit(1)  # Exit with non-zero code to indicate failure to Coolify
 
       strio = StringIO()
 

@@ -47,9 +47,6 @@ async def run_periodic(interval: float, func: Callable[[], None]) -> NoReturn:
       logger.error(f"Error in periodic task: {e}")
     await sleep(interval)
 
-    # except Exception as e:
-    #   logger.error(f"Error processing email: {e}")
-
 
 async def main() -> NoReturn:  # sourcery skip: remove-empty-nested-block
   RICH_CONSOLE.rule("[bold red]Booting...[/]", style="bold red")

@@ -3,25 +3,21 @@ if __name__ == "__main__":
 
   configure_logging()
 
-import os
 import sys
 from logging import getLogger
+from os import environ
 from pathlib import Path
 from typing import Annotated
 
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-# from pydantic.networks import NameEmail
-
 logger = getLogger(__name__)
 
-os.environ.setdefault("PYDANTIC_ERRORS_INCLUDE_URL", "false")
+environ.setdefault("PYDANTIC_ERRORS_INCLUDE_URL", "false")
 
 
 CWD = Path(__file__).parent if getattr(sys, "frozen", False) else Path.cwd()
-
-testing = False
 
 
 class Settings(BaseSettings):
