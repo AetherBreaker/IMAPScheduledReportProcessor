@@ -16,9 +16,6 @@ ENV UV_COMPILE_BYTECODE=1
 # Copy from the cache instead of linking since it's a mounted volume
 ENV UV_LINK_MODE=copy
 
-# Omit development dependencies
-ENV UV_NO_DEV=1
-
 # Ensure installed tools can be executed out of the box
 ENV UV_TOOL_BIN_DIR=/usr/local/bin
 
@@ -29,7 +26,6 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 # Enable Python optimizations (removes assert statements and sets __debug__ to False)
 ENV PYTHONOPTIMIZE=1
-
 
 # Install the project's dependencies using the lockfile and settings
 RUN --mount=type=cache,target=/root/.cache/uv \
@@ -43,10 +39,6 @@ RUN mkdir -p /app/src/logs \
 
 # Copy the source code into the container.
 COPY --chown=nonroot:nonroot ./src ./src
-
-# Copy entrypoint script (runs as root to fix volume permissions, then drops to appuser)
-# COPY entrypoint.sh /app/entrypoint.sh
-# RUN chmod +x /app/entrypoint.sh
 
 # Set PYTHONPATH so imports work correctly
 ENV PYTHONPATH=/app/src
