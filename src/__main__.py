@@ -3,7 +3,7 @@ if __name__ == "__main__":
 
   configure_logging()
 
-from asyncio import TaskGroup, run, sleep, to_thread
+from asyncio import TaskGroup, sleep, to_thread
 from asyncio.queues import Queue
 from collections.abc import Callable
 from datetime import datetime
